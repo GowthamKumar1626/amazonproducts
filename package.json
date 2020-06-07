@@ -1,0 +1,19 @@
+{
+  "name": "amazonexclusives",
+  "version": "1.0.0",
+  "description": "",
+  "main": "app.js",
+  "scripts": {
+    "strat:dev": "nodemon server.js",
+    "strat:prod": "NODE_ENV=production nodemon server.js"
+  },
+  "author": "Gowtham",
+  "license": "ISC",
+  "dependencies": {
+    "dotenv": "^8.2.0",
+    "express": "^4.17.1",
+    "mongoose": "^5.9.13",
+    "morgan": "^1.10.0",
+    "pug": "^3.0.0"
+  }
+}

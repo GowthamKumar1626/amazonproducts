@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <link
+      href="https://fonts.googleapis.com/css?family=Lato:300,300i,700"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css"
+      integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous" />
+
+    <link rel="stylesheet" href="./style.css" />
+    <link rel="shortcut icon" type="image/png" href="img/favicon.png" />
+    <title>Good Styles | Exciting stuff for people</title>
+  </head>
+  <body>
+    <header class="header">
+      <nav class="nav nav--tours">
+        <a href="#" class="nav__el">Good Styles</a>
+      </nav>
+      <div class="header__logo">
+        <img src="img/logo-white.png" alt=" logo" />
+      </div>
+      <!-- <nav class="nav nav--user">
+        <a href="#" class="nav__el"></a>
+        <a href="#" class="nav__el">
+          <img src="img/user.jpg" alt="User photo" class="nav__user-img" />
+          <span></span>
+        </a> -->
+
+        <!-- <button class="nav__el">Log in</button>
+        <button class="nav__el nav__el--cta">Sign up</button> -->
+      </nav>
+    </header>
+
+    <!-- In video, this <main> element is wrongly called: <section class="overview">. So in pug template, please use main.main instead of section.overview -->
+    <main class="main">
+      <div class="card-container">
+        {%PRODUCT_CARDS%}
+      </div>
+      <!-- <nav aria-label="..." style="background-color: #f7f7f7;">
+        <li class="pagination page-item" style="float: right; font-size: 3rem;">
+          <a class="page-link btn--green" style="border-radius: 50%;" href="./index1.html"> <svg
+              class="bi bi-arrow-right-short" width="1em" height="1em" viewBox="0 0 16 16" fill="currentColor"
+              xmlns="http://www.w3.org/2000/svg">
+              <path fill-rule="evenodd"
+                d="M8.146 4.646a.5.5 0 0 1 .708 0l3 3a.5.5 0 0 1 0 .708l-3 3a.5.5 0 0 1-.708-.708L10.793 8 8.146 5.354a.5.5 0 0 1 0-.708z" />
+              <path fill-rule="evenodd" d="M4 8a.5.5 0 0 1 .5-.5H11a.5.5 0 0 1 0 1H4.5A.5.5 0 0 1 4 8z" />
+            </svg> </a>
+        </li>
+      </nav> -->
+    </main>
+
+    <div class="footer">
+      <ul class="footer__nav">
+        <li><a href="#">About us</a></li>
+        <li><a href="#">Download apps</a></li>
+        <li><a href="#">Become a guide</a></li>
+        <li><a href="#">Careers</a></li>
+        <li><a href="#">Contact</a></li>
+      </ul>
+      <p class="footer__copyright">
+        &copy; by GoodStyles. All rights reserved.
+      </p>
+    </div>
+  </body>
+</html>

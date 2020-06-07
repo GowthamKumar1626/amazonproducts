@@ -1,0 +1,41 @@
+extends base
+
+block content
+    main.main
+        .card-container
+
+            each product in products 
+                .card
+                    .card__header
+                        .card__picture
+                            .card__picture-overlay &nbsp;
+                            img.card__picture-img(src=`img/amazon/${product.imageCover}`, alt='Tour 1')
+                        h3.heading-tertirary
+                            span= product.productBy
+
+                    .card__details
+                        h4.card__sub-heading= product.productName
+                        p.card__text= product.description
+                        .card__data
+                            svg.card__icon
+                                use(xlink:href='img/icons.svg#summer')
+                            span Style
+                        .card__data
+                            span= product.style
+                        .card__data
+                            svg.card__icon
+                                use(xlink:href='img/icons.svg#color-palette')
+                            span Colors Available
+                        .card__data
+                            svg.card__icon
+                                use(xlink:href='img/icons.svg#icon-user')
+                            span= product.colors
+
+                    .card__footer
+                        p
+                            span.card__footer-value= product.price
+                            span.card__footer-text   per person
+                        p.card__ratings
+                            span.card__footer-value= product.ratingsAverage
+                            span.card__footer-text= ` rating (${product.ratingsQuantity})`
+                        a.btn.btn--green.btn--small(href=`${product.link}`) Details
