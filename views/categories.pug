@@ -1,0 +1,17 @@
+extends base
+
+block content
+    main.main
+        .card-container
+            each categori in allCategories 
+                .card
+                    .card__details
+                        h4.card__sub-heading= categori.category 
+                            img.card__icon(src=`img/icons/${categori.categoryIcon}`, alt="", style="float: right;height: 3.5rem;width: 3.5rem;")
+                        p.card__text= categori.catrgoryDescription
+
+                        each val, index in categori.types
+                            .card__data(style="font-size: 1.5rem; font-weight: bold;")
+                                span= categori.types[index]
+                            .card__data
+                                a.btn.btn--green.btn--small(href=`${categori.links[index]}`) Details

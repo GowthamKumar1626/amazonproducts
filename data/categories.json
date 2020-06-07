@@ -1,0 +1,16 @@
+[
+  {
+    "category": "Women Clothing",
+    "categoryIcon": "icons8-wedding-dress-48.png",
+    "catrgoryDescription": "Latest trends with amazing discounts we provide the best products",
+    "types": ["Kurthies", "Jean Tops"],
+    "links": ["kurthies", "jeantops"]
+  },
+  {
+    "category": "Men Clothing",
+    "categoryIcon": "icons8-tracksuit-48.png",
+    "catrgoryDescription": "Latest trends with amazing discounts we provide the best products",
+    "types": ["T-Shirts", "jeans"],
+    "links": ["tshirts", "jeans"]
+  }
+]
