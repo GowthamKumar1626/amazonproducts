@@ -17,7 +17,27 @@ exports.checkBody = (req, res, next) => {
 
 exports.getAllProducts = async (req, res) => {
   try {
-    const allKurthies = await KurthiModel.find();
+    const queryObj = { ...req.query }; //req.query is used for filtering
+    const excludeFields = ["page", "sort", "limit", "fields"];
+    excludeFields.forEach((el) => delete queryObj[el]);
+
+    let queryStr = JSON.stringify(queryObj);
+    queryStr = queryStr.replace(/\bgte|gt|lt|lte\b/g, (match) => `$${match}`);
+
+    let query = KurthiModel.find(JSON.parse(queryStr));
+
+    if (req.query.sort) {
+      const sortBy = req.query.sort.split(",").join(" ");
+      query = query.sort(sortBy);
+    } else {
+      query = query.sort("-ratingsAverage");
+    }
+
+    const allKurthies = await query;
+    // const allKurthies = await KurthiModel.find()
+    //   .where("ratingsAverage")
+    //   .equals(3.9);
+    // const allKurthies = await KurthiModel.find();
     res.status(200).json({
       status: "success",
       totalKurthies: allKurthies.length,

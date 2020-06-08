@@ -7,6 +7,25 @@ const JeansTopModel = amazonProductModel.jeanTops;
 const sandalModel = amazonProductModel.sandals;
 const categories = categoryViewModel.categories;
 
+const filtering = (req, model) => {
+  const queryObj = { ...req.query }; //req.query is used for filtering
+  const excludeFields = ["page", "sort", "limit", "fields"];
+  excludeFields.forEach((el) => delete queryObj[el]);
+
+  let queryStr = JSON.stringify(queryObj);
+  queryStr = queryStr.replace(/\bgte|gt|lt|lte\b/g, (match) => `$${match}`);
+
+  let query = model.find(JSON.parse(queryStr));
+
+  if (req.query.sort) {
+    const sortBy = req.query.sort.split(",").join(" ");
+    query = query.sort(sortBy);
+  } else {
+    query = query.sort("-ratingsAverage");
+  }
+  return query;
+};
+
 exports.home = catchAsync(async (req, res) => {
   res.status(200).render("base");
 });
@@ -19,7 +38,8 @@ exports.categories = catchAsync(async (req, res) => {
 });
 
 exports.kurthiesPage = catchAsync(async (req, res) => {
-  const products = await KurthiModel.find();
+  const query = filtering(req, KurthiModel);
+  const products = await query;
 
   res.status(200).render("overview", {
     title: "GoodStyles|Kurthies",
@@ -27,7 +47,8 @@ exports.kurthiesPage = catchAsync(async (req, res) => {
   });
 });
 exports.jeanTopsPage = catchAsync(async (req, res) => {
-  const products = await JeansTopModel.find();
+  const query = filtering(req, JeansTopModel);
+  const products = await query;
 
   res.status(200).render("overview", {
     title: "GoodStyles|Jean-Tops",
@@ -35,7 +56,8 @@ exports.jeanTopsPage = catchAsync(async (req, res) => {
   });
 });
 exports.sanadalsPage = catchAsync(async (req, res) => {
-  const products = await sandalModel.find();
+  const query = filtering(req, sandalModel);
+  const products = await query;
 
   res.status(200).render("overview", {
     title: "GoodStyles|Sandals",
