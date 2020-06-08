@@ -54,3 +54,4 @@ const amazonProductSchema = new mongoose.Schema({
 
 exports.kurthies = mongoose.model("Kurthies", amazonProductSchema);
 exports.jeanTops = mongoose.model("JeanTops", amazonProductSchema);
+exports.sandals = mongoose.model("sandals", amazonProductSchema);

@@ -4,6 +4,7 @@ const catchAsync = require("./../utils/catchAsync");
 
 const KurthiModel = amazonProductModel.kurthies;
 const JeansTopModel = amazonProductModel.jeanTops;
+const sandalModel = amazonProductModel.sandals;
 const categories = categoryViewModel.categories;
 
 exports.home = catchAsync(async (req, res) => {
@@ -29,7 +30,15 @@ exports.jeanTopsPage = catchAsync(async (req, res) => {
   const products = await JeansTopModel.find();
 
   res.status(200).render("overview", {
-    title: "GoodStyles|Kurthies",
+    title: "GoodStyles|Jean-Tops",
+    products,
+  });
+});
+exports.sanadalsPage = catchAsync(async (req, res) => {
+  const products = await sandalModel.find();
+
+  res.status(200).render("overview", {
+    title: "GoodStyles|Sandals",
     products,
   });
 });

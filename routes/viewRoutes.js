@@ -7,5 +7,6 @@ router.get("/categories", viewControllers.categories);
 
 router.get("/kurthies", viewControllers.kurthiesPage);
 router.get("/jeantops", viewControllers.jeanTopsPage);
+router.get("/sandals", viewControllers.sanadalsPage);
 
 module.exports = router;
