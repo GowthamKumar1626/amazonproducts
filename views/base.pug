@@ -6,16 +6,25 @@ html
         link(rel="stylesheet", href="css/style.css")
         link(rel="shortcut icon", href="img/icons/icons8-bag-48.png", type="image/x-icon")
         link(rel="stylesheet", href="https://fonts.googleapis.com/css?family=Lato:300,300i,700")
+        // link(rel="stylesheet", href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css",integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk", crossorigin="anonymous")
         title GoodStyles | Exciting Stuff for Modern people
     body
         //Header
         include _header
         // Content
         block content
-            h1= 'This is GoodStyles home page.😍'  
-            h1= 'Soon we will release our home page.😁😃'
-            h1= 'Visit our Categories page to find some products. 👉 '
-                a.btn.btn--green.btn--small(href=`/categories` style="width:7.5%;") Details
+            .card-container(style="margin:auto; margin-left:65rem;")
+                .card
+                    .card__details
+                        h4.card__sub-heading= 'This is GoodStyles home page.😍'
+                        p.card__text= 'Notice:'  
+                        p.card__text= '1. Our app is in development mode.'
+                        p.card__text= '2. Soon we will release our updates very quick.'
+                        p.card__text= '3. Visit our categories page, we place some products.'
+                    .card__footer
+                        a.btn.btn--green.btn--small(href=`/categories`, style="float:right;") 👉 Categories Page
+
+                    
 
         
         //Footer
