@@ -5,6 +5,7 @@ const amazonProductSchema = new mongoose.Schema({
     type: String,
     required: true,
     trim: true,
+    minlength: [1, "Min length should be greater than zero characters"],
   },
   productName: {
     type: String,
@@ -30,12 +31,14 @@ const amazonProductSchema = new mongoose.Schema({
     required: true,
   },
   price: {
-    type: String,
+    type: Number,
     required: true,
   },
-  ratingsAverage: {
+  ratings: {
     type: Number,
     default: 0,
+    min: 0.0,
+    max: 5.0,
   },
   ratingsQuantity: {
     type: Number,

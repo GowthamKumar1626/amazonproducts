@@ -6,6 +6,8 @@ const kurthiesRouter = require("./routes/kurthiRoutes");
 const jeanTopsRouter = require("./routes/jeanTopsRoutes");
 const userRouter = require("./routes/userRoutes");
 const viewRouter = require("./routes/viewRoutes");
+const AppError = require("./utils/appError");
+const globalErrorHandler = require("./controllers/errorController");
 const compression = require("compression");
 
 const app = express();
@@ -32,8 +34,9 @@ app.use("/api/v1/jeantops", jeanTopsRouter);
 app.use("/api/v1/users", userRouter);
 
 app.all("*", (req, res, next) => {
-  res.status(404).header("<h1>404! Page not Found</h1>");
-  next();
+  next(new AppError(`Can't find ${req.originalUrl} is not found`, 404));
 });
+
+app.use(globalErrorHandler);
 
 module.exports = app;

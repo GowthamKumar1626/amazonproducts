@@ -1,15 +1,14 @@
 extends base
-
-block content
+block content    
     main.main
         .card-container
-
+            include _APIFeatures
             each product in products 
                 .card
                     .card__header
                         .card__picture
                             .card__picture-overlay &nbsp;
-                            img.card__picture-img(src=`img/amazon/${product.imageCover}`, alt='Tour 1')
+                            img.card__picture-img(src=`/img/amazon/${product.imageCover}`, alt='Tour 1')
                         h3.heading-tertirary
                             span= product.productBy
 
@@ -17,22 +16,22 @@ block content
                         h4.card__sub-heading= product.productName
                         p.card__text= product.description
                         .card__data
-                            img.card__icon(src="img/icons/style.png", alt="cash logo" style="height: 2.8rem;width: 2.8rem;float: left;") 
-                            span(style="font-size: 1.3rem; font-weight: bold;") Style
+                            img.card__icon(src="/img/icons/style.png", alt="cash logo" style="height: 2.8rem;width: 2.8rem;float: left;") 
+                            span(style="font-size: 1.3rem; font-weight: bold;padding:1rem;") Style
                         .card__data
                             span= product.style
                         .card__data
-                            img.card__icon(src="img/icons/colors.png", alt="cash logo" style="height: 2.8rem;width: 2.8rem;float: left;")
-                            span(style="font-size: 1.3rem; font-weight: bold;") Colors Available
+                            img.card__icon(src="/img/icons/colors.png", alt="cash logo" style="height: 2.8rem;width: 2.8rem;float: left;")
+                            span(style="font-size: 1.3rem; font-weight: bold; padding:1rem;") Colors Available
                         .card__data
                             span= product.colors
 
                     .card__footer
                         p
-                            span.card__footer-value= product.price
-                                img.card__icon(src="img/icons/tags.png", alt="cash logo" style="height: 3rem;width: 3rem;float: left;")
+                            span.card__footer-value(style="padding:1.2rem; margin:auto;")= `₹ ${product.price}`
+                                img.card__icon(src="/img/icons/tags.png", alt="cash logo" style="height: 3rem;width: 3rem;float: left;")
                         p.card__ratings
-                            span.card__footer-value= product.ratingsAverage
+                            span.card__footer-value(style="padding:1.2rem; margin:auto;")= product.ratings
                             span.card__footer-text= ` rating (${product.ratingsQuantity})`
-                                img.card__icon(src="img/icons/star.png", alt="cash logo" style="height: 3rem;width: 3rem;float: left;")
+                                img.card__icon(src="/img/icons/star.png", alt="cash logo" style="height: 3rem;width: 3rem;float: left;")
                         a.btn.btn--green.btn--small(href=`${product.link}`) Details

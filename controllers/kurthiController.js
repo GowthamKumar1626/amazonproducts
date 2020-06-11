@@ -1,5 +1,7 @@
 const amazonProductModel = require("./../models/amazonProductModel");
-
+const APIFeatures = require("./../utils/apiFeatures");
+const catchAsync = require("./../utils/catchAsync");
+const AppError = require("../utils/appError");
 const KurthiModel = amazonProductModel.kurthies;
 // const kurthiesData = JSON.parse(
 //   fs.readFileSync(`${__dirname}/../data/Kurthis.json`)
@@ -15,113 +17,85 @@ exports.checkBody = (req, res, next) => {
   next();
 };
 
-exports.getAllProducts = async (req, res) => {
-  try {
-    const queryObj = { ...req.query }; //req.query is used for filtering
-    const excludeFields = ["page", "sort", "limit", "fields"];
-    excludeFields.forEach((el) => delete queryObj[el]);
+exports.getAllProducts = catchAsync(async (req, res) => {
+  const features = new APIFeatures(KurthiModel.find(), req.query)
+    .filter()
+    .sort()
+    .paginate();
+  const allKurthies = await features.query;
+  res.status(200).json({
+    status: "success",
+    totalKurthies: allKurthies.length,
+    data: {
+      allKurthies,
+    },
+  });
+});
 
-    let queryStr = JSON.stringify(queryObj);
-    queryStr = queryStr.replace(/\bgte|gt|lt|lte\b/g, (match) => `$${match}`);
+exports.createProduct = catchAsync(async (req, res) => {
+  const newKurthi = await KurthiModel.create(req.body);
+  res.status(201).json({
+    status: "Success",
+    data: {
+      kurthies: newKurthi,
+    },
+  });
+});
 
-    let query = KurthiModel.find(JSON.parse(queryStr));
+exports.getSingleProduct = catchAsync(async (req, res) => {
+  const kurthie = await KurthiModel.findById(req.params.id);
+  if (!kurthie) {
+    return next(new AppError("No tour found with that id", 404));
+  }
+  res.status(200).json({
+    status: "Success",
+    data: {
+      kurthie,
+    },
+  });
+});
 
-    if (req.query.sort) {
-      const sortBy = req.query.sort.split(",").join(" ");
-      query = query.sort(sortBy);
-    } else {
-      query = query.sort("-ratingsAverage");
+exports.updateProduct = catchAsync(async (req, res) => {
+  const updatedKurthie = await KurthiModel.findByIdAndUpdate(
+    req.params.id,
+    req.body,
+    {
+      new: true,
+      runValidators: true,
     }
+  );
+  res.status(200).json({
+    status: "Success",
+    data: {
+      updatedKurthie,
+    },
+  });
+});
 
-    const allKurthies = await query;
-    // const allKurthies = await KurthiModel.find()
-    //   .where("ratingsAverage")
-    //   .equals(3.9);
-    // const allKurthies = await KurthiModel.find();
-    res.status(200).json({
-      status: "success",
-      totalKurthies: allKurthies.length,
-      data: {
-        allKurthies,
+exports.deleteProduct = catchAsync(async (req, res) => {
+  await KurthiModel.findByIdAndDelete(req.params.id);
+  res.status(204).json({
+    status: "Success",
+    data: null,
+  });
+});
+
+exports.getAllProductsStatistics = catchAsync(async (req, res) => {
+  const stats = await KurthiModel.aggregate([
+    {
+      $match: { ratingsAverage: { $gte: 3.0 } },
+    },
+    {
+      $group: {
+        _id: null, // _id: '$colors';
+        avgRating: { $avg: "$ratingsAverage" },
+        maxRating: { $max: "$ratingsAverage" },
+        minRating: { $min: "$ratingsAverage" },
       },
-    });
-  } catch (err) {
-    res.status(404).json({
-      status: "Failed",
-      message: err,
-    });
-  }
-};
-
-exports.createProduct = async (req, res) => {
-  try {
-    const newKurthi = await KurthiModel.create(req.body);
-    res.status(201).json({
-      status: "Success",
-      data: {
-        kurthies: newKurthi,
-      },
-    });
-  } catch (err) {
-    res.status(400).json({
-      status: "Fail",
-      message: err,
-    });
-  }
-};
-
-exports.getSingleProduct = async (req, res) => {
-  try {
-    const kurthie = await KurthiModel.findById(req.params.id);
-    res.status(200).json({
-      status: "Success",
-      data: {
-        kurthie,
-      },
-    });
-  } catch (err) {
-    res.status(400).json({
-      status: "Fail",
-      message: err,
-    });
-  }
-};
-
-exports.updateProduct = async (req, res) => {
-  try {
-    const updatedKurthie = await KurthiModel.findByIdAndUpdate(
-      req.params.id,
-      req.body,
-      {
-        new: true,
-        runValidators: true,
-      }
-    );
-    res.status(200).json({
-      status: "Success",
-      data: {
-        updatedKurthie,
-      },
-    });
-  } catch (err) {
-    res.status(404).json({
-      status: "Failed",
-      message: err,
-    });
-  }
-};
-
-exports.deleteProduct = async (req, res) => {
-  try {
-    await KurthiModel.findByIdAndDelete(req.params.id);
-    res.status(204).json({
-      status: "Success",
-      data: null,
-    });
-  } catch (err) {
-    res.status(404).json({
-      status: "Failed",
-      message: err,
-    });
-  }
-};
+    },
+  ]);
+  res.status(200).json({
+    status: "Success",
+    data: stats,
+  });
+});

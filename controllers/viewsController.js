@@ -1,66 +1,47 @@
 const amazonProductModel = require("./../models/amazonProductModel");
 const categoryViewModel = require("./../models/categoryViewModel");
+
 const catchAsync = require("./../utils/catchAsync");
+const APIFeatures = require("./../utils/apiFeatures");
+const AppError = require("./../utils/appError");
 
-const KurthiModel = amazonProductModel.kurthies;
-const JeansTopModel = amazonProductModel.jeanTops;
-const sandalModel = amazonProductModel.sandals;
 const categories = categoryViewModel.categories;
-
-const filtering = (req, model) => {
-  const queryObj = { ...req.query }; //req.query is used for filtering
-  const excludeFields = ["page", "sort", "limit", "fields"];
-  excludeFields.forEach((el) => delete queryObj[el]);
-
-  let queryStr = JSON.stringify(queryObj);
-  queryStr = queryStr.replace(/\bgte|gt|lt|lte\b/g, (match) => `$${match}`);
-
-  let query = model.find(JSON.parse(queryStr));
-
-  if (req.query.sort) {
-    const sortBy = req.query.sort.split(",").join(" ");
-    query = query.sort(sortBy);
-  } else {
-    query = query.sort("-ratingsAverage");
-  }
-  return query;
-};
 
 exports.home = catchAsync(async (req, res) => {
   res.status(200).render("base");
 });
 exports.categories = catchAsync(async (req, res) => {
   const allCategories = await categories.find();
+
   res.status(200).render("categories", {
     title: "GoodStyles|Categories",
     allCategories,
   });
 });
 
-exports.kurthiesPage = catchAsync(async (req, res) => {
-  const query = filtering(req, KurthiModel);
-  const products = await query;
-
-  res.status(200).render("overview", {
-    title: "GoodStyles|Kurthies",
-    products,
-  });
-});
-exports.jeanTopsPage = catchAsync(async (req, res) => {
-  const query = filtering(req, JeansTopModel);
-  const products = await query;
-
-  res.status(200).render("overview", {
-    title: "GoodStyles|Jean-Tops",
-    products,
-  });
-});
-exports.sanadalsPage = catchAsync(async (req, res) => {
-  const query = filtering(req, sandalModel);
-  const products = await query;
-
+exports.productsPage = catchAsync(async (req, res, next) => {
+  const pageRequested = req.params.products;
+  if (!amazonProductModel[pageRequested]) {
+    return next(new AppError("Product is not found", 404));
+  }
+  const features = new APIFeatures(
+    amazonProductModel[pageRequested].find(),
+    req.query
+  )
+    .filter()
+    .sort()
+    .paginate();
+  const products = await features.query;
   res.status(200).render("overview", {
     title: "GoodStyles|Sandals",
     products,
+  });
+});
+
+exports.addProducts = catchAsync(async (req, res) => {
+  const models = { ...amazonProductModel };
+  res.status(200).render("addProducts", {
+    title: "GoodStyles|Sandals",
+    models,
   });
 });
