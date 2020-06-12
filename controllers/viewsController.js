@@ -21,6 +21,7 @@ exports.categories = catchAsync(async (req, res) => {
 
 exports.productsPage = catchAsync(async (req, res, next) => {
   const pageRequested = req.params.products;
+  console.log(amazonProductModel);
   if (!amazonProductModel[pageRequested]) {
     return next(new AppError("Product is not found", 404));
   }
