@@ -1,10 +1,13 @@
+script
+    include APIFeaturesURL.js
 .card(style="background-color:#f7f7f7; height:20rem; width:20rem;")
     .card__details
             h4.card__sub-heading Sort By
+                img.card__icon(src=`/img/icons/reload.png`, onclick="refresh()" alt="", style="float: right;height: 1.5rem;width:1.5rem;")
             label(for="price" style="font-size:1.4rem;") Price:
-            input(type="checkbox" id="price" name="price" value="price" onClick=`location.replace("?sort=price")` style="margin: auto;")
+            input(type="checkbox" class="price" id="price" name="price" value="price" onClick=`sortByPrice()` style="margin: auto;")
             label(for="ratings" style="font-size:1.4rem;") Ratings:
-            input(type="checkbox" id="ratings" name="ratings" value="ratings" onClick=`location.replace("?sort=-ratings")` style="margin: auto;")
+            input(type="checkbox" id="ratings" name="ratings" value="ratings" onClick=`sortByRatings()` style="margin: auto;")
             label(for="ratingsQuantity" style="font-size:1.4rem;") Ratings Quantity:
-            input(type="checkbox" id="ratingsQuantity" name="ratingsQuantity" value="ratingsQuantity" onClick=`location.replace("?sort=-ratingsQuantity")` style="margin: auto;")
-
+            input(type="checkbox" id="ratingsQuantity" name="ratingsQuantity" value="ratingsQuantity" onClick=`sortByRatingsQuantity()` style="margin: auto;")
+    

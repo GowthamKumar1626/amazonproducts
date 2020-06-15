@@ -8,18 +8,26 @@ const {
   deleteProduct,
   getAllProductsStatistics,
 } = require("./../controllers/kurthiController");
+const authController = require("./../controllers/authController");
 
 const router = express.Router();
 
 //router.param("id", checkId);
 
-router.route("/").get(getAllProducts).post(createProduct);
+router
+  .route("/")
+  .get(authController.protect, getAllProducts)
+  .post(createProduct);
 router.route("/stats").get(getAllProductsStatistics);
 
 router
   .route("/:id")
   .get(getSingleProduct)
   .patch(updateProduct)
-  .delete(deleteProduct);
+  .delete(
+    authController.protect,
+    authController.restrictTo("admin", "seller"),
+    deleteProduct
+  );
 
 module.exports = router;

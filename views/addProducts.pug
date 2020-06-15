@@ -6,7 +6,7 @@ block content
     .login-form
       h2.heading-secondary.ma-bt-lg ADD PRODUCTS
       br
-      label(for="sel1" style="font-size: 1.5rem;") SELECT PRODUCT NAME:
+      label(for="sel1" style="font-size: 1.5rem; padding:1rem;") SELECT PRODUCT NAME:
       select.form-control(id="sel1" style="font-size: 1.3rem;")
         each model, val in models
           option(value="", id="val")=`${val}`
