@@ -1,3 +1,3 @@
 #GOODSTYLES SUB APPLICATION FOR AMAZON EXCLUSIVES
 
-It was build on nodejs, express, mangoDB etc
+It was build on nodejs, express, mangoDB 
